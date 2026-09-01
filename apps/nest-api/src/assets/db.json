@@ -1,0 +1,483 @@
+{
+  "vehicles": [
+    {
+      "id": "74b8",
+      "year": 2024,
+      "image": "https://thumbs.dreamstime.com/z/old-car-same-place-red-driving-past-post-office-grand-canyon-397292778.jpg?ct=jpeg",
+      "model": "Huracán 1",
+      "chassi": "123321313asffasf2",
+      "renavam": "12323213333",
+      "licensePlate": "1asffxv",
+      "carBrand": 12,
+      "category": 0
+    },
+    {
+      "id": "226d",
+      "year": 1800,
+      "image": "https://thumbs.dreamstime.com/z/car-line-15423967.jpg?ct=jpeg",
+      "model": "Mobi 2024",
+      "chassi": "123321313asffasf2",
+      "renavam": "12323213333",
+      "licensePlate": "1asffxv",
+      "carBrand": 39,
+      "category": 1
+    },
+    {
+      "id": "38fb",
+      "year": 1800,
+      "image": "https://thumbs.dreamstime.com/z/mature-lesbian-couple-posing-marriage-1133639.jpg?ct=jpeg",
+      "model": "Fusca",
+      "chassi": "123321313asffasf2",
+      "renavam": "12323213333",
+      "licensePlate": "1asffxv",
+      "carBrand": 83,
+      "category": 1
+    },
+    {
+      "id": "e114",
+      "image": "https://thumbs.dreamstime.com/z/bentley-series-car-chongqing-auto-show-motors-corporation-motors-limited-world-famous-luxury-manufacturer-headquartered-42494853.jpg?ct=jpeg",
+      "model": "Teste Novo",
+      "year": "2024",
+      "chassi": "123321313asffasf2",
+      "renavam": "12323213333",
+      "licensePlate": "1asffxv",
+      "carBrand": 18,
+      "category": 0
+    },
+    {
+      "id": "8afd",
+      "year": 2025,
+      "image": "https://thumbs.dreamstime.com/z/restored-pontiac-trans-29058705.jpg?ct=jpeg",
+      "model": "Mercedinha no mel",
+      "chassi": "9bgsc08wsrc615386",
+      "renavam": "00626119006",
+      "licensePlate": "2222222",
+      "carBrand": 5,
+      "category": 0
+    }
+  ],
+  "categories": [
+    {
+      "id": "0",
+      "description": "A - Motocicletas, motonetas e triciclos"
+    },
+    {
+      "id": "1",
+      "description": "B - Carros, picapes e vans"
+    },
+    {
+      "id": "2",
+      "description": "C - Caminhões, caminhonetes e vans de Carga"
+    },
+    {
+      "id": "3",
+      "description": "D - Ônibus, micro-ônibus, vans de passageiros"
+    },
+    {
+      "id": "4",
+      "description": "E - Treminhão, ônibus articulados, veículos com trailers"
+    }
+  ],
+  "brands": [
+    {
+      "id": "0",
+      "name": "Toyota"
+    },
+    {
+      "id": "1",
+      "name": "Honda"
+    },
+    {
+      "id": "2",
+      "name": "Ford"
+    },
+    {
+      "id": "3",
+      "name": "Chevrolet"
+    },
+    {
+      "id": "4",
+      "name": "BMW"
+    },
+    {
+      "id": "5",
+      "name": "Mercedes-Benz"
+    },
+    {
+      "id": "6",
+      "name": "Volkswagen"
+    },
+    {
+      "id": "7",
+      "name": "Audi"
+    },
+    {
+      "id": "8",
+      "name": "Nissan"
+    },
+    {
+      "id": "9",
+      "name": "Hyundai"
+    },
+    {
+      "id": "10",
+      "name": "Kia"
+    },
+    {
+      "id": "11",
+      "name": "Subaru"
+    },
+    {
+      "id": "12",
+      "name": "Mazda"
+    },
+    {
+      "id": "13",
+      "name": "Jaguar"
+    },
+    {
+      "id": "14",
+      "name": "Lexus"
+    },
+    {
+      "id": "15",
+      "name": "Land Rover"
+    },
+    {
+      "id": "16",
+      "name": "Porsche"
+    },
+    {
+      "id": "17",
+      "name": "Ferrari"
+    },
+    {
+      "id": "18",
+      "name": "Lamborghini"
+    },
+    {
+      "id": "19",
+      "name": "Maserati"
+    },
+    {
+      "id": "20",
+      "name": "Bentley"
+    },
+    {
+      "id": "21",
+      "name": "Rolls-Royce"
+    },
+    {
+      "id": "22",
+      "name": "Volvo"
+    },
+    {
+      "id": "23",
+      "name": "Jeep"
+    },
+    {
+      "id": "24",
+      "name": "Tesla"
+    },
+    {
+      "id": "25",
+      "name": "Cadillac"
+    },
+    {
+      "id": "26",
+      "name": "Buick"
+    },
+    {
+      "id": "27",
+      "name": "GMC"
+    },
+    {
+      "id": "28",
+      "name": "Dodge"
+    },
+    {
+      "id": "29",
+      "name": "Chrysler"
+    },
+    {
+      "id": "30",
+      "name": "Lincoln"
+    },
+    {
+      "id": "31",
+      "name": "Acura"
+    },
+    {
+      "id": "32",
+      "name": "Infiniti"
+    },
+    {
+      "id": "33",
+      "name": "Mitsubishi"
+    },
+    {
+      "id": "34",
+      "name": "Mini"
+    },
+    {
+      "id": "35",
+      "name": "Alfa Romeo"
+    },
+    {
+      "id": "36",
+      "name": "Peugeot"
+    },
+    {
+      "id": "37",
+      "name": "Renault"
+    },
+    {
+      "id": "38",
+      "name": "Citroën"
+    },
+    {
+      "id": "39",
+      "name": "Fiat"
+    },
+    {
+      "id": "40",
+      "name": "Aston Martin"
+    },
+    {
+      "id": "41",
+      "name": "Bugatti"
+    },
+    {
+      "id": "42",
+      "name": "Pagani"
+    },
+    {
+      "id": "43",
+      "name": "McLaren"
+    },
+    {
+      "id": "44",
+      "name": "Genesis"
+    },
+    {
+      "id": "45",
+      "name": "Suzuki"
+    },
+    {
+      "id": "46",
+      "name": "Saab"
+    },
+    {
+      "id": "47",
+      "name": "Isuzu"
+    },
+    {
+      "id": "48",
+      "name": "Skoda"
+    },
+    {
+      "id": "49",
+      "name": "Seat"
+    },
+    {
+      "id": "50",
+      "name": "Opel"
+    },
+    {
+      "id": "51",
+      "name": "Lancia"
+    },
+    {
+      "id": "52",
+      "name": "Daihatsu"
+    },
+    {
+      "id": "53",
+      "name": "Smart"
+    },
+    {
+      "id": "54",
+      "name": "Hummer"
+    },
+    {
+      "id": "55",
+      "name": "Saturn"
+    },
+    {
+      "id": "56",
+      "name": "Pontiac"
+    },
+    {
+      "id": "57",
+      "name": "Oldsmobile"
+    },
+    {
+      "id": "58",
+      "name": "Scion"
+    },
+    {
+      "id": "59",
+      "name": "Plymouth"
+    },
+    {
+      "id": "60",
+      "name": "Rover"
+    },
+    {
+      "id": "61",
+      "name": "MG"
+    },
+    {
+      "id": "62",
+      "name": "Dacia"
+    },
+    {
+      "id": "63",
+      "name": "Geely"
+    },
+    {
+      "id": "64",
+      "name": "Tata"
+    },
+    {
+      "id": "65",
+      "name": "Proton"
+    },
+    {
+      "id": "66",
+      "name": "Mahindra"
+    },
+    {
+      "id": "67",
+      "name": "Maruti Suzuki"
+    },
+    {
+      "id": "68",
+      "name": "Great Wall"
+    },
+    {
+      "id": "69",
+      "name": "Chery"
+    },
+    {
+      "id": "70",
+      "name": "BYD"
+    },
+    {
+      "id": "71",
+      "name": "Baojun"
+    },
+    {
+      "id": "72",
+      "name": "FAW"
+    },
+    {
+      "id": "73",
+      "name": "Dongfeng"
+    },
+    {
+      "id": "74",
+      "name": "Lifan"
+    },
+    {
+      "id": "75",
+      "name": "Zotye"
+    },
+    {
+      "id": "76",
+      "name": "Hongqi"
+    },
+    {
+      "id": "77",
+      "name": "Haval"
+    },
+    {
+      "id": "78",
+      "name": "Lynk & Co"
+    },
+    {
+      "id": "79",
+      "name": "Weilai (Nio)"
+    },
+    {
+      "id": "80",
+      "name": "Wuling"
+    },
+    {
+      "id": "81",
+      "name": "Rimac"
+    },
+    {
+      "id": "82",
+      "name": "Fisker"
+    },
+    {
+      "id": "83",
+      "name": "Lucid"
+    },
+    {
+      "id": "84",
+      "name": "Koenigsegg"
+    },
+    {
+      "id": "85",
+      "name": "Caterham"
+    },
+    {
+      "id": "86",
+      "name": "Ariel"
+    },
+    {
+      "id": "87",
+      "name": "Morgan"
+    },
+    {
+      "id": "88",
+      "name": "Ginetta"
+    },
+    {
+      "id": "89",
+      "name": "Dodge"
+    },
+    {
+      "id": "90",
+      "name": "Shelby"
+    },
+    {
+      "id": "91",
+      "name": "Studebaker"
+    },
+    {
+      "id": "92",
+      "name": "Packard"
+    },
+    {
+      "id": "93",
+      "name": "Delorean"
+    },
+    {
+      "id": "94",
+      "name": "Trabant"
+    },
+    {
+      "id": "95",
+      "name": "Yugo"
+    },
+    {
+      "id": "96",
+      "name": "Tucker"
+    },
+    {
+      "id": "97",
+      "name": "TVR"
+    },
+    {
+      "id": "98",
+      "name": "Vauxhall"
+    },
+    {
+      "id": "99",
+      "name": "Holden"
+    }
+  ]
+}

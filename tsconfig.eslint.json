@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["**/*.ts", "**/*.mts", "eslint.config.js", "eslint.config.mjs"],
+  "include": ["**/*.ts", "**/*.mts", "**/*.cts", "eslint.config.js", "eslint.config.mjs"],
   "exclude": [
     "node_modules",
     "**/.angular/**",

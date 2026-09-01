@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Sistema de Cadastro de Veículos</h1>
-  <p><em>Aplicação Angular 20 com SSR, autenticação por cookie criptografado e API Express, organizada em um monorepo Nx.</em></p>
+  <p><em>Aplicação Angular 20 com SSR, autenticação por cookie criptografado e API em Express ou NestJS, organizada em um monorepo Nx.</em></p>
 </div>
 
 <p align="center">
@@ -56,11 +56,11 @@
 
 O projeto é um monorepo [Nx](https://nx.dev/) com três aplicações dentro de `apps/`:
 
-| Projeto                   | O que é                                                                                                              | Porta                       |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| `vehicle-register-system` | Front-end Angular 20 com SSR, standalone components, service worker e hydration incremental.                         | `4200` (dev) / `4000` (SSR) |
-| `api`                     | Back-end **ativo**: servidor Express escrito à mão (`apps/api/src/main.ts`) com CRUD genérico sobre um arquivo JSON. | `3000`                      |
-| `nest-api`                | Scaffold mínimo em NestJS — não é o back-end principal, serve como base para uma futura migração.                    | —                           |
+| Projeto                   | O que é                                                                                                               | Porta                       |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `vehicle-register-system` | Front-end Angular 20 com SSR, standalone components, service worker e hydration incremental.                          | `4200` (dev) / `4000` (SSR) |
+| `api`                     | Back-end **padrão**: servidor Express escrito à mão (`apps/api/src/main.ts`) com CRUD genérico sobre um arquivo JSON. | `3000`                      |
+| `nest-api`                | Back-end **alternativo**: o mesmo contrato HTTP reescrito em NestJS, modularizado. Drop-in do projeto `api`.          | `3000`                      |
 
 ### Front-end (`apps/vehicle-register-system/src/app/`)
 
@@ -107,13 +107,33 @@ npm start
 
 O target `serve` do Angular tem `dependsOn: ["api:serve"]`, ou seja, **este comando sobe também a API Express**. Depois, acesse http://localhost:4200/ — a API responde em http://localhost:3000/.
 
-Para subir apenas um projeto individualmente:
+### Ambiente de desenvolvimento com a API NestJS
 
 ```bash
-npx nx serve vehicle-register-system   # somente o front-end
-npx nx serve api                       # somente a API Express
-npm run start:nest-api                 # scaffold NestJS (opcional)
+npm run start:with-nest-api
 ```
+
+Sobe em paralelo o `nest-api` (porta 3000) e o front-end (porta 4200) — é o equivalente de `npm start`, mas com a API NestJS no lugar da Express.
+
+A flag `--excludeTaskDependencies` no script é **obrigatória**: ela suprime o `dependsOn: ["api:serve"]` do target `serve` do Angular. Sem ela o Nx subiria a API Express junto e as duas brigariam pela porta 3000. Não tente conferir isso com `--graph=stdout` — o comando de grafo do Nx ignora essa flag e mostra o `api:serve` mesmo assim; confira na saída da execução real.
+
+Antes de subir, o script roda `tools/check-dev-ports.mjs` para garantir que as portas 3000 e 4200 estão livres. Isso não é decoração: se a 3000 já estiver ocupada, o `nest-api` falha com `EADDRINUSE`, o executor `@nx/js:node` engole o erro (watch mode) e você acaba usando a **API que já estava na porta** sem perceber.
+
+Detalhes que valem saber:
+
+- Os dois processos sobem em paralelo, sem espera — se a primeira requisição falhar, recarregue a página.
+- Cada API tem seu próprio `db.json` dentro de `dist/`. Dados criados em uma não aparecem na outra, e cada novo build restaura o estado inicial de `apps/nest-api/src/assets/db.json`.
+- Se o terminal for fechado à força (em vez de `Ctrl+C`), o processo Node do `nest-api` pode continuar segurando as portas 3000 e 9229. Use `netstat -ano | findstr :3000` e `taskkill /F /T /PID <pid>`.
+
+### Subir apenas um projeto
+
+```bash
+npx nx serve vehicle-register-system --excludeTaskDependencies   # só o front-end (sem a flag, o Nx sobe a API Express junto)
+npx nx serve api                                                 # só a API Express
+npm run start:nest-api                                           # só a API NestJS
+```
+
+> As duas APIs escutam na porta `3000` e atendem exatamente o mesmo contrato, então rode **uma por vez**: `npm start` usa a Express, `npm run start:with-nest-api` usa a NestJS.
 
 ### Build de produção
 
@@ -121,7 +141,7 @@ npm run start:nest-api                 # scaffold NestJS (opcional)
 npm run build
 ```
 
-Esse comando faz o build de produção do Angular, aplica obfuscação de JavaScript no bundle do browser (`dist/vehicle-register-system/browser`) e builda o projeto `api`.
+Esse comando faz o build de produção do Angular, aplica obfuscação de JavaScript no bundle do browser (`dist/vehicle-register-system/browser`) e builda os dois back-ends (`api` e `nest-api`), em `dist/apps/api` e `dist/apps/nest-api`.
 
 ### Rodar em modo produção com SSR
 
@@ -131,15 +151,28 @@ npm run serve:ssr
 
 Faz o build e sobe, em paralelo, o servidor SSR do Angular (http://localhost:4000/) e a API Express (http://localhost:3000/).
 
+O `serve:ssr` sobe a API Express. Como o `npm run build` já builda os dois back-ends, para rodar a NestJS a partir do `dist/` basta usar o script equivalente ao `serve:express-server`:
+
+```bash
+npm run serve:nest-server   # node ./dist/apps/nest-api/main.js
+```
+
+Ou seja, o `serve:ssr` com a NestJS é `npm run build` + `serve:app-server` + `serve:nest-server` (não há script único para essa combinação). Os dois rodam na porta 3000, então use um por vez.
+
 ### Variáveis de ambiente
 
 - `environment.API` **não** vem de um arquivo `.env`: é definido em tempo de build pelo símbolo global `API_URL`, via opção `define` em `apps/vehicle-register-system/project.json` — `"http://localhost:3000"` em desenvolvimento e `"/api"` em produção (nesse caso o servidor SSR faz o proxy).
-- A API Express lê `PORT`, `COOKIE_SECRET` e `VERY_SECRET` via `dotenv`.
+- As duas APIs (Express e NestJS) leem `PORT`, `COOKIE_SECRET` e `VERY_SECRET` via `dotenv`.
 - O servidor SSR lê `CLIENT_PORT`, `API_URL` e `COOKIE_SECRET`.
 
 ## :electric_plug: **API**
 
-A API é um servidor Express (`apps/api/src/main.ts`) que persiste os dados em `apps/api/src/assets/db.json`. Um factory `createCrudRouter` gera as rotas CRUD para cada entidade.
+O contrato HTTP é implementado duas vezes, e as duas implementações são intercambiáveis:
+
+- **Express** (`apps/api/src/main.ts`) — um factory `createCrudRouter` gera as rotas CRUD de cada entidade; persiste em `apps/api/src/assets/db.json`.
+- **NestJS** (`apps/nest-api/`) — o mesmo comportamento modularizado; persiste em `apps/nest-api/src/assets/db.json`.
+
+Nenhuma das duas usa prefixo global: as rotas ficam na raiz, porque é assim que o front-end as consome (`environment.API` + `/vehicles`, e o servidor SSR reescreve `/api` → `/`).
 
 | Método   | Rota                                    | Descrição                                  |
 | -------- | --------------------------------------- | ------------------------------------------ |
@@ -151,9 +184,31 @@ A API é um servidor Express (`apps/api/src/main.ts`) que persiste os dados em `
 | `POST`   | `/login`                                | Cria o cookie `TokenCookie` criptografado  |
 | `GET`    | `/session`                              | Valida o cookie de sessão e o IP de origem |
 
-As mesmas rotas existem para `brands` e `categories`. Todas as requisições (exceto `/login`) exigem o cookie `TokenCookie`, caso contrário recebem `401`. O CORS está liberado apenas para as origens conhecidas do projeto, com `credentials: true`.
+As mesmas rotas existem para `brands` e `categories`. Todas as requisições exigem o cookie `TokenCookie` — exceto `/login` e `/secret/:id` — caso contrário recebem `401 {"message":"Unauthorized: TokenCookie is required"}`. O CORS está liberado apenas para as origens conhecidas do projeto, com `credentials: true`.
 
-> A menção a `json-server` em versões anteriores deste README está desatualizada: o CRUD hoje é servido pelo projeto Express `api`.
+### Estrutura da API NestJS (`apps/nest-api/src/`)
+
+| Pasta                                 | Papel                                                                                                                           |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `common/`                             | Constantes, models, o decorator `@Public()`, o `TokenCookieGuard` global e o `RequestSourceMiddleware`                          |
+| `database/`                           | `DatabaseService` — leitura/escrita do `db.json`, com as mutações serializadas para não perder gravações concorrentes           |
+| `crud/`                               | `CrudService` + `BaseCrudController` — equivalente ao factory `createCrudRouter` do Express, via herança dos decorators de rota |
+| `vehicles/`, `brands/`, `categories/` | Um módulo/controller por entidade, cada um só declarando qual chave do `db.json` usa                                            |
+| `auth/`                               | `TokenService` (AES-256-CBC), `AuthService` e o `AuthController` com `/login`, `/session` e `/secret/:id`                       |
+
+Equivalências entre as duas implementações:
+
+| Express                              | NestJS                                                              |
+| ------------------------------------ | ------------------------------------------------------------------- |
+| `validateAuthCookie` (middleware)    | `TokenCookieGuard` global + `@Public()` em `/login` e `/secret/:id` |
+| `validateRequestSource` (middleware) | `RequestSourceMiddleware`                                           |
+| `createCrudRouter(entity)` (factory) | `CrudService` + `BaseCrudController` herdado                        |
+| `readDb` / `writeDb`                 | `DatabaseService.read()` / `.write()` / `.runExclusive()`           |
+| `encryptToken` / `decryptToken`      | `TokenService.encrypt()` / `.decrypt()`                             |
+
+Os erros usam `HttpException` com corpo de objeto (e não `NotFoundException`/`UnauthorizedException`) porque as exceções nativas do Nest acrescentariam os campos `error` e `statusCode` — a API Express responde apenas `{"message":"..."}`. Os tokens são compatíveis entre os dois back-ends e com o servidor SSR: mesmo `aes-256-cbc`, mesma chave derivada por sha256 e mesmo formato `iv:payload` em hexadecimal.
+
+> A menção a `json-server` em versões anteriores deste README está desatualizada: o CRUD hoje é servido pelos projetos `api` (Express) e `nest-api` (NestJS).
 
 ## :lock: **Autenticação e SSR**
 
@@ -169,7 +224,8 @@ As mesmas rotas existem para `brands` e `categories`. Todas as requisições (ex
 ```bash
 npm test                                # roda todos os testes do monorepo (nx test)
 npx nx test vehicle-register-system     # testes do front-end (Karma/Jasmine)
-npx nx test api                         # testes da API (Jest)
+npx nx test api                         # testes da API Express (Jest)
+npx nx test nest-api                    # testes da API NestJS (Jest)
 npm run lint                            # ESLint (flat config em eslint.config.mjs)
 npm run lint:fix                        # ESLint com correção automática
 npm run format                          # Prettier em todo o repositório
